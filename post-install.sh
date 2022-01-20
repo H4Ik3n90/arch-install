@@ -22,7 +22,7 @@ ln -sf /usr/share/zoneinfo/$USER_TIMEZONE /etc/localtime
 hwclock --systohc 
 
 # uncomment selected locale
-sed '/en_US.UTF-8 UTF-8/s^#//' -i /etc/locale.gen
+sed '/en_US.UTF-8/s^#//' -i /etc/locale.gen
 
 # generate locale-gen file
 locale-gen

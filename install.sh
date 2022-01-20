@@ -140,7 +140,7 @@ then
 elif [ $ASK_SYSTEM == '2' ]
 then 
     # download and install system packages
-    pacstrap /mnt base base-devel sudo nano firefox btrfs-progs intel-ucode linux linux-firmware -y
+    pacstrap /mnt base base-devel sudo nano firefox btrfs-progs linux linux-firmware -y
 
 fi 
 

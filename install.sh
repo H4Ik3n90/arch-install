@@ -135,12 +135,12 @@ then
     if [ $PARTITION_CHOOSE == 'intel' ]
     then 
         # download and install system packages
-        pacstrap /mnt base base-devel sudo nano intel-ucode linux linux-firmware -y
+        pacstrap /mnt base base-devel sudo nano firefox intel-ucode linux linux-firmware -y
    
     elif [ $PARTITION_CHOOSE == 'amd' ]  
     then 
         # download and install system packages
-        pacstrap /mnt base base-devel sudo nano amd-ucode linux linux-firmware -y
+        pacstrap /mnt base base-devel sudo nano firefox amd-ucode linux linux-firmware -y
 
     fi
  
@@ -149,12 +149,12 @@ then
     if [ $PARTITION_CHOOSE == 'intel' ]
     then 
         # download and install system packages
-        pacstrap /mnt base base-devel sudo nano btrfs-progs intel-ucode linux linux-firmware -y
+        pacstrap /mnt base base-devel sudo nano firefox btrfs-progs intel-ucode linux linux-firmware -y
    
     elif [ $PARTITION_CHOOSE == 'amd' ]  
     then 
         # download and install system packages
-        pacstrap /mnt base base-devel sudo nano btrfs-progs amd-ucode linux linux-firmware -y
+        pacstrap /mnt base base-devel sudo nano firefox btrfs-progs amd-ucode linux linux-firmware -y
 
     fi
 
@@ -164,7 +164,8 @@ fi
 genfstab -U /mnt >> /mnt/etc/fstab
 
 # copy file installation file to new partition
-cp ./post-install.sh /mnt 
+cd ../
+cp -R ./arch-install /mnt 
 
 # change root to new file system partition
 arch-chroot /mnt

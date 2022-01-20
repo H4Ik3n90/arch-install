@@ -26,7 +26,7 @@ echo -ne "\n Enter your locale(default input)? "
 read USER_LOCALE
 
 # uncomment selected locale
-sed '/pattern/s^#//' -i /etc/locale.gen
+sed '/en_US.UTF-8 UTF-8/s^#//' -i /etc/locale.gen
 
 # generate locale-gen file
 locale-gen
@@ -61,10 +61,29 @@ echo -e "${GREEN} ###################################"
 echo -e "${GREEN} #        ${CYAN}Configure Packages${GREEN}       #"
 echo -e "${GREEN} ###################################"
 
-# download and install some packages
-pacman -Sy networkmanager wpa_supplicant bluez bluez-utils cups grub grub-btrfs os-prober efibootmgr
+echo -ne "${CYAN}\n Are you using btrfs file system(y/n)? "
+read USER_FILESYSTEM
+
+if [ $USER_FILESYSTEM == 'y']
+then 
+    # download and install some packages
+    pacman -Sy networkmanager wpa_supplicant cups dialog grub grub-btrfs os-prober efibootmgr
+
+elif [ $USER_FILESYSTEM == 'n' ]
+then 
+    # download and install some packages
+    pacman -Sy networkmanager wpa_supplicant cups dialog grub os-prober efibootmgr
+fi 
 
 # setting up some packages
+systemctl enable wpa_supplicant
+systemctl start wpa_supplicant
+
+systemctl enable NetworkManager 
+systemctl start NetworkManager
+
+systemctl enable cupsd
+systemctl start cupsd
 
 # configure new user
 echo -e "\n"
@@ -86,3 +105,41 @@ read USER_NEW_PASSWORD
 useradd -mG wheel $USER_NEW_USERNAME
 passwd $USER_NEW_PASSWORD
 
+# enable user wheel to access root 
+EDITOR=nano visudo
+
+# configure grub bootloader
+echo -e "\n"
+echo -e "${GREEN} ###################################"
+echo -e "${GREEN} #        ${CYAN}Configure Grub${GREEN}           #"
+echo -e "${GREEN} ###################################"
+
+if [ $USER_FILESYSTEM == 'y']
+then 
+    # add btrfs module to mkinitcpio
+    echo "MODULES=(btrfs)" >> /etc/mkinitcpio.conf  
+
+    # create image 
+    mkinitcpio -p linux 
+
+    # installing grub 
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
+
+    # generate bootloader config file
+    grub-mkconfig -o /boot/grub/grub.cfg 
+
+elif [ $USER_FILESYSTEM == 'n' ]
+then 
+    # installing grub 
+    grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=Arch
+
+    # generate bootloader config file
+    grub-mkconfig -o /boot/grub/grub.cfg
+
+fi 
+
+# exit and umount all mounted partition
+exit
+umount -R /mnt  
+
+echo -ne "${CYAN}\n Installation has finished"

@@ -67,7 +67,7 @@ read USER_FILESYSTEM
 if [ $USER_FILESYSTEM == 'y']
 then 
     # download and install some packages
-    pacman -Sy networkmanager wpa_supplicant cups dialog grub grub-btrfs os-prober efibootmgr
+    pacman -Sy iwd networkmanager wpa_supplicant cups dialog grub grub-btrfs os-prober efibootmgr
 
 elif [ $USER_FILESYSTEM == 'n' ]
 then 

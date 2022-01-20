@@ -14,10 +14,12 @@ echo -e "${GREEN} ###################################"
 
 # opening cfdisk
 echo -ne "${CYAN}\n Open disk partition using CFDISK\n\n"
+cfdisk 
 
 # ask user cpu 
 echo -ne "${CYAN}\n What CPU do you use(intel/amd)? "
 read USER_CPU
+echo -ne "\n"
 
 # setup partition logo 
 echo -e "${GREEN} ###################################"
@@ -129,29 +131,33 @@ echo -e "${GREEN} ###################################"
 echo -e "${GREEN} #         ${CYAN}Install System${GREEN}          #"
 echo -e "${GREEN} ###################################"
 
+# ask btrfs partition
+echo -ne "${CYAN}\n Are you using btrfs partition(y/n)"
+read ASK_SYSTEM
+
 # different packages in different file system format 
-if [ $PARTITION_CHOOSE == '1' ] 
+if [ $ASK_SYSTEM == 'n' ] 
 then 
-    if [ $PARTITION_CHOOSE == 'intel' ]
+    if [ $USER_CPU == 'intel' ]
     then 
         # download and install system packages
         pacstrap /mnt base base-devel sudo nano firefox intel-ucode linux linux-firmware -y
    
-    elif [ $PARTITION_CHOOSE == 'amd' ]  
+    elif [ $USER_CPU == 'amd' ]  
     then 
         # download and install system packages
         pacstrap /mnt base base-devel sudo nano firefox amd-ucode linux linux-firmware -y
 
     fi
  
-elif [ $PARTITION_CHOOSE == '2' ]
+elif [ $ASK_SYSTEM == '2' ]
 then 
-    if [ $PARTITION_CHOOSE == 'intel' ]
+    if [ $USER_CPU == 'intel' ]
     then 
         # download and install system packages
         pacstrap /mnt base base-devel sudo nano firefox btrfs-progs intel-ucode linux linux-firmware -y
    
-    elif [ $PARTITION_CHOOSE == 'amd' ]  
+    elif [ $USER_CPU == 'amd' ]  
     then 
         # download and install system packages
         pacstrap /mnt base base-devel sudo nano firefox btrfs-progs amd-ucode linux linux-firmware -y

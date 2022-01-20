@@ -15,10 +15,6 @@ echo -e "${GREEN} ###################################"
 # opening cfdisk
 echo -ne "${CYAN}\n Open disk partition using CFDISK\n\n"
 cfdisk 
-
-# ask user cpu 
-echo -ne "${CYAN}\n What CPU do you use(intel/amd)? "
-read USER_CPU
 echo -ne "\n"
 
 # setup partition logo 
@@ -138,31 +134,13 @@ read ASK_SYSTEM
 # different packages in different file system format 
 if [ $ASK_SYSTEM == 'n' ] 
 then 
-    if [ $USER_CPU == 'intel' ]
-    then 
-        # download and install system packages
-        pacstrap /mnt base base-devel sudo nano firefox intel-ucode linux linux-firmware -y
-   
-    elif [ $USER_CPU == 'amd' ]  
-    then 
-        # download and install system packages
-        pacstrap /mnt base base-devel sudo nano firefox amd-ucode linux linux-firmware -y
-
-    fi
+    # download and install system packages
+    pacstrap /mnt base base-devel sudo nano firefox linux linux-firmware -y
  
 elif [ $ASK_SYSTEM == '2' ]
 then 
-    if [ $USER_CPU == 'intel' ]
-    then 
-        # download and install system packages
-        pacstrap /mnt base base-devel sudo nano firefox btrfs-progs intel-ucode linux linux-firmware -y
-   
-    elif [ $USER_CPU == 'amd' ]  
-    then 
-        # download and install system packages
-        pacstrap /mnt base base-devel sudo nano firefox btrfs-progs amd-ucode linux linux-firmware -y
-
-    fi
+    # download and install system packages
+    pacstrap /mnt base base-devel sudo nano firefox btrfs-progs intel-ucode linux linux-firmware -y
 
 fi 
 
